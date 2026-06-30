@@ -29,11 +29,18 @@
         <a href="#contato">Contato</a>
     </nav>
 
+<!--    
     <div class="menu-toggle" id="menu-toggle">
         ☰
     </div>
-
+-->
+    <div class="menu-toggle" id="menu-toggle">
+        <i class="fas fa-bars"></i>
+    </div>
 </header>
+
+
+
 
     <!-- HERO -->
     <section class="hero">
@@ -184,6 +191,10 @@
 
             <div class="swiper-wrapper">
 
+            <!--    <div class="swiper-slide">
+                    <img src="img/trab.jpeg" alt="">
+                </div>
+                -->
                 <div class="swiper-slide">
                     <img src="img/trab1.jpeg" alt="">
                 </div>
@@ -207,8 +218,46 @@
                 <div class="swiper-slide">
                     <img src="img/trab6.jpeg" alt="">
                 </div>
+<!--
+                <div class="swiper-slide video-slide">
 
+                <video
+                    class="portfolio-video"
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                    preload="metadata"
+                    >
+                    <source src="img/video.mp4" type="video/mp4">
+                </video>
 
+                <video
+                    class="portfolio-video"
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                    preload="metadata"
+                    >
+                    <source src="img/video2.mp4" type="video/mp4">
+                </video>
+
+                </div>
+
+                <div class="swiper-slide video-slide">
+                    <video
+                        class="portfolio-video"
+                        autoplay
+                        muted
+                        loop
+                        playsinline
+                        preload="metadata">
+
+                        <source src="img/video2.mp4" type="video/mp4">
+                    </video>
+                </div>
+-->
             </div>
 
             <div class="swiper-button-next"></div>
@@ -276,7 +325,44 @@ const menuToggle = document.getElementById("menu-toggle");
 const menu = document.getElementById("menu");
 
 menuToggle.addEventListener("click", () => {
+
     menu.classList.toggle("active");
+
+    const icon = menuToggle.querySelector("i");
+
+    if(menu.classList.contains("active")){
+
+        icon.classList.remove("fa-bars");
+        icon.classList.add("fa-xmark");
+
+        document.body.style.overflow="hidden";
+
+    }else{
+
+        icon.classList.remove("fa-xmark");
+        icon.classList.add("fa-bars");
+
+        document.body.style.overflow="auto";
+
+    }
+
+});
+
+document.querySelectorAll("#menu a").forEach(link=>{
+
+    link.addEventListener("click",()=>{
+
+        menu.classList.remove("active");
+
+        const icon = menuToggle.querySelector("i");
+
+        icon.classList.remove("fa-xmark");
+        icon.classList.add("fa-bars");
+
+        document.body.style.overflow="auto";
+
+    });
+
 });
 
 
@@ -304,7 +390,7 @@ window.addEventListener("scroll", revealOnScroll);
 
 revealOnScroll();
 
-new Swiper(".meuPortfolio", {
+const swiper = new Swiper(".meuPortfolio", {
 
     loop: true,
 
@@ -340,7 +426,9 @@ new Swiper(".meuPortfolio", {
                 scale: 0.85
             }
 
+            
         },
+        
 
         // TABLET E DESKTOP
         768: {
@@ -356,6 +444,52 @@ new Swiper(".meuPortfolio", {
         }
 
     }
+
+});
+
+// VÍDEOS DO PORTFÓLIO
+const isDesktop = window.innerWidth >= 768;
+const videos = document.querySelectorAll(".portfolio-video");
+
+videos.forEach(video => {
+
+    if (isDesktop) {
+
+        video.addEventListener("mouseenter", () => {
+            swiper.autoplay.stop();
+        });
+
+        video.addEventListener("mouseleave", () => {
+            swiper.autoplay.start();
+        });
+
+    } else {
+
+        video.addEventListener("touchstart", (e) => {
+
+            e.stopPropagation();
+
+            swiper.autoplay.stop();
+
+        });
+
+    }
+
+});
+
+document.addEventListener("touchstart", (e) => {
+
+    if (!e.target.closest(".video-slide")) {
+
+        swiper.autoplay.start();
+
+    }
+
+});
+
+video.addEventListener("ended", () => {
+
+    swiper.autoplay.start();
 
 });
 
